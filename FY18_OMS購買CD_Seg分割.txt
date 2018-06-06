@@ -1,0 +1,49 @@
+Private Sub CommandButton1_Click()
+Dim i, j, k, loop_1, num, count_1, count_2 As Long
+Dim m, address_1, address_num As String
+Dim value_1 As Double
+Dim n As Range
+Dim adr(0 To 100) As Long
+    loop_1 = Worksheets("sheet1").Range("G2").End(xlDown).Row
+    loop_1 = loop_1
+    j = Worksheets("detail").Range("B4").End(xlDown).Row
+    For i = TextBox1.Value To loop_1
+        num = 0
+        count_1 = 0
+        count_2 = 0
+        m = Worksheets("sheet1").Range("G" & i).Value
+        Set n = Worksheets("detail").Range("B1：B" & j & "").Find(What:=m, After:=Range("B1"), LookIn:=xlFormulas, _
+            LookAt:=xlWhole, SearchOrder:=xlByColumns, SearchDirection:=xlNext, _
+            MatchCase:=False, MatchByte:=False, SearchFormat:=False)
+            address_1 = n.Address
+            k = Len(address_1)
+            k = k - 3
+            address_num = Right(address_1, k)
+            num = Application.WorksheetFunction.CountIf(Worksheets("detail").[B：B], "=" & n)
+            If num > 1 Then
+                For count_1 = 1 To num
+                    If Worksheets("detail").Range("I" & address_num).Value <> "" Then
+                        adr(count_2) = address_num
+                        count_2 = count_2 + 1
+                    End If
+                    Set n = Worksheets("detail").Range("B1：B" & j & "").FindNext(n)
+                    address_1 = n.Address
+                    k = Len(address_1)
+                    k = k - 3
+                    address_num = Right(address_1, k)
+                Next
+                If count_2 <> 0 Then
+                    value_1 = 1 / count_2
+                    For count_1 = 0 To count_2 - 1
+                        Worksheets("detail").Range("M" & adr(count_1)).Value = value_1
+                    Next
+                Else
+                    MsgBox ("有两组空")
+                    Exit For
+                End If
+            Else
+                Worksheets("detail").Range("M" & address_num).Value = 1
+            End If
+
+    Next
+End Sub

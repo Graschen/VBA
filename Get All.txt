@@ -1,0 +1,70 @@
+Private Sub Get_All_Click()
+Dim i, x As Long
+Dim j, k, m(21), n As Integer
+    n = 0
+    For n = 0 To 20
+        m(n) = 0
+    Next
+    n = 0
+    i = Worksheets("Sheet1").Range("E14").End(xlDown).Row
+    Worksheets("Sheet1").Range("C15:C" & i & "").Replace What:=";", Replacement:="."
+    For k = 10 To 210 Step 10
+        If Not Worksheets("Sheet1").Range("E14:E" & i & "").Find(k, lookAt:=xlWhole) Is Nothing Then
+            m(n) = k
+            n = n + 1
+        End If
+    Next
+    For n = 0 To 20
+        If m(n) > 0 Then
+            Worksheets("Sheet1").Range("A14:K" & i & "").AutoFilter Field:=5, Criteria1:=m(n)
+            i = Worksheets("Sheet1").Range("E14").End(xlDown).Row
+'            Worksheets("Sheet1").Range("C15:C" & i & "").Replace What:=";", Replacement:="."
+            x = Worksheets("Sheet1").AutoFilter.Range.SpecialCells(xlCellTypeVisible).Areas.Count - 1
+            If x > 10 Then
+                Worksheets("Sheet1").Range("C15:C" & i & "").NumberFormatLocal = "h:mm:ss;@"
+                Worksheets("Sheet1").Range("C14:C" & i & "").SpecialCells(xlCellTypeVisible).Copy
+                Sheets.Add , After:=ActiveSheet
+                ActiveSheet.Name = "Sheet2"
+                Worksheets("Sheet2").Paste
+                Worksheets("Sheet2").Range("B1") = "subtime"
+                Worksheets("Sheet2").Range("B2").Formula = "=A3-A2"
+                i = Worksheets("Sheet2").Range("A1").End(xlDown).Row
+                Worksheets("Sheet2").Range("B2").AutoFill Destination:=Worksheets("Sheet2").Range("B2:B" & i & "")
+                Worksheets("Sheet2").Columns.EntireColumn.AutoFit
+                Worksheets("Sheet2").Range("A1:B" & i & "").AutoFilter Field:=2, Criteria1:=">0:00:01"
+                Worksheets("Sheet2").Range("A1:B" & i & "").NumberFormatLocal = "h:mm:ss.000"
+                i = Worksheets("Sheet2").Range("A1").End(xlDown).Row
+                Worksheets("Sheet2").Range("A1:B" & i & "").SpecialCells(xlCellTypeVisible).Copy
+                Sheets.Add , After:=ActiveSheet
+                ActiveSheet.Name = "Sheet3"
+                Worksheets("Sheet3").Paste
+                Worksheets("Sheet3").Range("C1") = "cycle time"
+                Worksheets("Sheet3").Range("D1") = "step time"
+                Worksheets("Sheet3").Range("C2").Formula = "=A3-A2"
+                Worksheets("Sheet3").Range("D2").Formula = "=C2-B2"
+                i = Worksheets("Sheet3").Range("A1").End(xlDown).Row
+                Worksheets("Sheet3").Range("C2:D2").AutoFill Destination:=Worksheets("Sheet3").Range("C2:D" & i & "")
+                Worksheets("Sheet3").Columns.EntireColumn.AutoFit
+                Worksheets("Sheet3").Range("D1:D" & i & "").Copy
+                On Error Resume Next
+                If Worksheets("StepTime") Is Nothing Then
+                    Sheets.Add , After:=ActiveSheet
+                    ActiveSheet.Name = "StepTime"
+                End If
+                i = Worksheets("Sheet3").Range("D2").End(xlDown).Row
+                For j = 1 To 21
+                    If Worksheets("StepTime").Cells(1, j) = "" Then
+                        Worksheets("StepTime").Cells(1, j).Resize(i, 1).PasteSpecial Paste:=xlPasteValuesAndNumberFormats
+                        Worksheets("StepTime").Cells(1, j) = "Step Time " & m(n)
+                        Worksheets("StepTime").Columns.EntireColumn.AutoFit
+                        Exit For
+                    End If
+                Next
+                Application.DisplayAlerts = False
+                Worksheets("Sheet2").Delete
+                Worksheets("Sheet3").Delete
+    '            Worksheets("Sheet1").Range("A1:K" & i & "").AutoFilterMode = False
+            End If
+        End If
+    Next
+End Sub

@@ -1,0 +1,80 @@
+
+
+Dim i, j As Integer
+Dim k As String
+
+    j = 0
+    For i = 1 To 48
+        If i <= 19 Or i >= 24 Then
+            Sheets.Add , After:=ActiveSheet
+            ActiveSheet.Name = Worksheets("SH").Range("B" & i + 1 & "") & "_SH"
+            k = ActiveSheet.Name
+            Worksheets("Sheet1").Range("A1:H1048576").Copy
+            ActiveSheet.Paste
+            If i = 19 Then
+                ActiveSheet.Range("A1") = "Emergency stop"
+            Else
+                ActiveSheet.Range("A1") = Worksheets("Shipment Overview").Range("C" & i + 4 & "")
+            End If
+            Worksheets("SH").Hyperlinks.Add Anchor:=Worksheets("SH").Range("B" & 2 + j & ""), Address:=ActiveWorkbook.Name, SubAddress:="'" & k & "'!A1"
+            ActiveSheet.Hyperlinks.Add Anchor:=ActiveSheet.Range("A1"), Address:=ActiveWorkbook.Name, SubAddress:="SH!A" & i + 1 & ""
+        End If
+        j = j + 1
+    Next
+    j = 0
+    For i = 1 To 48
+        If i <= 19 Or i >= 24 Then
+            Sheets.Add , After:=ActiveSheet
+            ActiveSheet.Name = Worksheets("CD").Range("B" & i + 1 & "") & "_CD"
+            k = ActiveSheet.Name
+            Worksheets("Sheet1").Range("A1:H1048576").Copy
+            ActiveSheet.Paste
+            If i = 19 Then
+                ActiveSheet.Range("A1") = "Emergency stop"
+            Else
+                ActiveSheet.Range("A1") = Worksheets("Shipment Overview").Range("C" & i + 4 & "")
+            End If
+            Worksheets("CD").Hyperlinks.Add Anchor:=Worksheets("CD").Range("B" & 2 + j & ""), Address:=ActiveWorkbook.Name, SubAddress:="'" & k & "'!A1"
+            ActiveSheet.Hyperlinks.Add Anchor:=ActiveSheet.Range("A1"), Address:=ActiveWorkbook.Name, SubAddress:="CD!A" & i + 1 & ""
+        End If
+        j = j + 1
+    Next
+    j = 0
+    For i = 1 To 48
+        If i <= 19 Or i >= 24 Then
+            Sheets.Add , After:=ActiveSheet
+            ActiveSheet.Name = Worksheets("TZ").Range("B" & i + 1 & "") & "_TZ"
+            k = ActiveSheet.Name
+            Worksheets("Sheet1").Range("A1:H1048576").Copy
+            ActiveSheet.Paste
+            If i = 19 Then
+                ActiveSheet.Range("A1") = "Emergency stop"
+            Else
+                ActiveSheet.Range("A1") = Worksheets("Shipment Overview").Range("C" & i + 4 & "")
+            End If
+            Worksheets("TZ").Hyperlinks.Add Anchor:=Worksheets("TZ").Range("B" & 2 + j & ""), Address:=ActiveWorkbook.Name, SubAddress:="'" & k & "'!A1"
+            ActiveSheet.Hyperlinks.Add Anchor:=ActiveSheet.Range("A1"), Address:=ActiveWorkbook.Name, SubAddress:="TZ!A" & i + 1 & ""
+        End If
+        j = j + 1
+    Next
+    j = 0
+    For i = 1 To 48
+        If i <= 19 Or i >= 24 Then
+            Sheets.Add , After:=ActiveSheet
+            ActiveSheet.Name = Worksheets("GL").Range("B" & i + 1 & "") & "_GL"
+            k = ActiveSheet.Name
+            Worksheets("Sheet1").Range("A1:H1048576").Copy
+            ActiveSheet.Paste
+            If i = 19 Then
+                ActiveSheet.Range("A1") = "Emergency stop"
+            Else
+                ActiveSheet.Range("A1") = Worksheets("Shipment Overview").Range("C" & i + 4 & "")
+            End If
+            Worksheets("GL").Hyperlinks.Add Anchor:=Worksheets("GL").Range("B" & 2 + j & ""), Address:=ActiveWorkbook.Name, SubAddress:="'" & k & "'!A1"
+            ActiveSheet.Hyperlinks.Add Anchor:=ActiveSheet.Range("A1"), Address:=ActiveWorkbook.Name, SubAddress:="GL!A" & i + 1 & ""
+        End If
+        j = j + 1
+    Next
+    j = 0
+
+
